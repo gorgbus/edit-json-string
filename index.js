@@ -63,7 +63,7 @@ const isJSON = (str) => {
 
             const editedContent = reveresedParts[reveresedParts.length - 1];
 
-            core.setOutput("content", JSON.stringify(editedContent));
+            core.setOutput("content", JSON.stringify(editedContent, null, 4));
         } catch (err) {
             core.setFailed(err);
         }

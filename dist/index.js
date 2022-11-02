@@ -2819,17 +2819,26 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(722);
 
+const isJSON = (str) => {
+    try {
+        const parsed = JSON.parse(str);
+
+        return parsed;
+    } catch (err) {
+        return false;
+    }
+}
+
 (
     async () => {
         try {
-            const content = core.getInput("json_string");
-            const parsedContent = JSON.parse(content);
+            const content = JSON.parse(core.getInput("json_string"));
 
             const splitChar = core.getInput("split_char");
 
             const fields = core.getInput("field").split(splitChar ? splitChar : ".");
 
-            let checkField = { ...parsedContent };
+            let checkField = { ...content };
 
             for (const field of fields) {
                 if (!field in checkField) throw `${field} doesn't exist in the json string`;
@@ -2838,7 +2847,8 @@ const core = __nccwpck_require__(722);
             }
 
             const value = core.getInput("value");
-            const partsOfContent = [parsedContent];
+            const parsedValue = isJSON(value) ? isJSON(value) : value;
+            const partsOfContent = [content];
 
             for (const index in fields) {
                 const field = fields[index];
@@ -2849,7 +2859,7 @@ const core = __nccwpck_require__(722);
 
                 part = part[field];
 
-                if (Number(index) === fields.length - 1) part = value;
+                if (Number(index) === fields.length - 1) part = parsedValue;
 
                 partsOfContent.push([field, part]);
             }
@@ -2872,7 +2882,7 @@ const core = __nccwpck_require__(722);
 
             const editedContent = reveresedParts[reveresedParts.length - 1];
 
-            core.setOutput("content", JSON.stringify(editedContent));
+            core.setOutput("content", JSON.stringify(editedContent, null, 4));
         } catch (err) {
             core.setFailed(err);
         }
