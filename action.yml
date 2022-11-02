@@ -1,0 +1,27 @@
+name: "edit-json-string"
+description: "edit json strings"
+
+inputs:
+  json_string:
+    required: true
+    description: "string you want to edit"
+  field:
+    required: true
+    description: "name of the field you want to edit/add"
+  value:
+    required: true
+    description: "value of the selected field"
+  split_char:
+    description: "character that will be used to split up nested fields in field input - defaults to '.'"
+
+outputs:
+  content:
+    description: "new edited json string"
+
+runs:
+  using: node16
+  main: dist/index.js
+
+branding:
+  icon: "edit"
+  color: "purple"
